@@ -3,6 +3,7 @@ package edsonjr.com.br.testsidia.Tasks;
 
 import android.content.Context;
 import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.util.Log;
 
 import java.io.BufferedReader;
@@ -17,16 +18,17 @@ import edsonjr.com.br.testsidia.Utils.IOUtils;
 
 public class Downloader  {
 
-
-    public final int TIMEOUT_MILLIS = 15000;
+    private Context context;
+    private final int TIMEOUT_MILLIS = 15000;
     private URL url;
     private final String TAG = Downloader.class.getCanonicalName();
 
 
 
     //Construtor
-    public Downloader(URL url){
+    public Downloader(Context context, URL url){
         this.url = url;
+        this.context = context;
     }
 
 
@@ -70,6 +72,13 @@ public class Downloader  {
 
 
 
+    public boolean isOnline() {
+        ConnectivityManager cm = (ConnectivityManager)
+                this.context.getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        NetworkInfo netInfo = cm.getActiveNetworkInfo();
+        return netInfo != null && netInfo.isConnectedOrConnecting();
+    }
 
 
 
