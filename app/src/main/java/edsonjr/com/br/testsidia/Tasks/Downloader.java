@@ -9,6 +9,7 @@ import android.util.Log;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.ConnectException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -33,7 +34,7 @@ public class Downloader  {
 
 
 
-    public String GET(){
+    public String GET() throws ConnectException{
 
         String dataParsed = new String();
         String data = "";
@@ -42,30 +43,38 @@ public class Downloader  {
         BufferedReader bufferedReader;
 
 
-        //Tentando estabelecer conexao e baixar conteudo da URL
-        try{
-            connection = (HttpURLConnection) url.openConnection();
-            connection.setRequestMethod("GET");
-            connection.setConnectTimeout(TIMEOUT_MILLIS);
+        if(isOnline()){
+            Log.d(TAG, "Conectado a web!");
+            //Tentando estabelecer conexao e baixar conteudo da URL
+            try{
+                connection = (HttpURLConnection) url.openConnection();
+                connection.setRequestMethod("GET");
+                connection.setConnectTimeout(TIMEOUT_MILLIS);
+                connection.setRequestProperty("Content-Type","application/json");
 
-            //Verificando a resposta do servidor
-            int responseCode = connection.getResponseCode();
+                //Verificando a resposta do servidor
+                int responseCode = connection.getResponseCode();
 
-            if(responseCode  >= HttpURLConnection.HTTP_BAD_REQUEST){
-                Log.d(TAG, "Erro de conexao ou falha de processamento! Codigo: " + responseCode);
-            }else{
-                inputStream = connection.getInputStream();
-                //Convertendo inputstream para string
-                dataParsed = IOUtils.toString(inputStream,"UTF-8");
+                if(responseCode  >= HttpURLConnection.HTTP_BAD_REQUEST){
+                    Log.d(TAG, "Erro de conexao ou falha de processamento! Codigo: " + responseCode);
+                }else{
+                    inputStream = connection.getInputStream();
+                    //Convertendo inputstream para string
+                    dataParsed = IOUtils.toString(inputStream,"UTF-8");
+                }
+
+            }catch (MalformedURLException e){
+                Log.d(TAG, "Error...");
+                e.printStackTrace();
+            } catch (IOException e){
+                Log.d(TAG, "Error...");
+                e.printStackTrace();
             }
-
-        }catch (MalformedURLException e){
-            Log.d(TAG, "Error...");
-            e.printStackTrace();
-        } catch (IOException e){
-            Log.d(TAG, "Error...");
-            e.printStackTrace();
+        }else{
+            throw new ConnectException("Falha de conexao!");
         }
+
+
         //retornando os dados baixados de decodificados em formato
         return dataParsed;
     }
