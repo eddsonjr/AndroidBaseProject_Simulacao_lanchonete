@@ -1,7 +1,16 @@
 package edsonjr.com.br.testsidia.Tasks;
 
 
+import android.os.AsyncTask;
+
+public class BaixarPratosTask extends AsyncTask<Void,Void,Void> {
 
 
-public class BaixarPratosTask {
+
+
+
+    @Override
+    protected Void doInBackground(Void... voids) {
+        return null;
+    }
 }
