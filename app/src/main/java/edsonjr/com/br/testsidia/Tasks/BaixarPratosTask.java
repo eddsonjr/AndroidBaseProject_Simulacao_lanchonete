@@ -90,6 +90,8 @@ public class BaixarPratosTask extends AsyncTask<Object, Integer, List<Prato>> {
 
     protected void dispararBroadcast(List<Prato> pratos) {
 
+        Log.d(TAG,"Disparando broadcast...");
+
         if(this.context != null){
             Intent atulaizarPratos = new Intent(this.broadCastName);
             atulaizarPratos.putExtra ("listaPratos",(ArrayList<Prato>) pratos);
@@ -99,13 +101,5 @@ public class BaixarPratosTask extends AsyncTask<Object, Integer, List<Prato>> {
             Log.d(TAG, "Contexto nulo!");
         }
     }
-
-
-
-
-
-
-
-
 
 }
