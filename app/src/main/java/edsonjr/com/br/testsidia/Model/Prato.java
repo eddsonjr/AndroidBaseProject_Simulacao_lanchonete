@@ -5,7 +5,6 @@ package edsonjr.com.br.testsidia.Model;
 
 public class Prato {
 
-
     private String nomePrato;
     private float valor;
     private String descricaoPrato;
@@ -48,5 +47,8 @@ public class Prato {
     public void setDescricaoPrato(String descricaoPrato) {
         this.descricaoPrato = descricaoPrato;
     }
+
+
+
 
 }

@@ -6,10 +6,12 @@ import android.os.AsyncTask;
 import android.util.Log;
 
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 import java.net.ConnectException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.List;
 
 import edsonjr.com.br.testsidia.Model.Prato;
 
@@ -38,10 +40,6 @@ public class BaixarPratosTask extends AsyncTask<Void,Void,Void> {
 
 
 
-
-
-
-
     @Override
     protected Void doInBackground(Void... voids) {
         Log.d(TAG, "Dentro de doInBackGround...\n");
@@ -53,6 +51,11 @@ public class BaixarPratosTask extends AsyncTask<Void,Void,Void> {
             result = downloader.GET();
             Log.d(TAG, "Resutl: " + result);
 
+            //Fazendo parser
+            Gson gson = new Gson();
+            List<Prato> pratos = gson.fromJson(result,new  TypeToken<List<Prato>>() {
+            }.getType());
+            Log.d(TAG,"Feito parser de " + pratos.size() + " pratos vindos da web!");
 
 
 
